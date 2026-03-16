@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Contract Style"
+  short_description: "Enforce strict frontend API and style rules"
+  default_prompt: "Use $frontend-contract-style to implement a frontend change with standard-only API contracts and consistent code style."
