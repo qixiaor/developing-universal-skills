@@ -1,47 +1,47 @@
 ---
 name: frontend-contract-style
-description: Enforce strict frontend API contract updates and consistent implementation style. Use when Codex changes frontend request payloads, parameter names, response handling, component logic, or related refactors that must converge on one standard contract without transitional compatibility and must keep concise, consistent code organization and comments.
+description: 统一前端接口契约和实现风格。适用于用户提到“接口字段改了”“前端参数要和后端一致”“改请求体/响应结构”“接口字段重命名”“去掉兼容写法”“统一提交参数”“批量调整调用点”“顺手把代码风格收敛一下”等场景，也适用于 request payload、query 参数、response handling、hook/store/component 调用链的一次性标准化改造。
 ---
 
 # Frontend Contract Style
 
-Apply these rules whenever a frontend task touches interface contracts or implementation style.
+前端任务只要涉及接口契约、参数命名、响应处理或实现风格收敛，就按下面规则执行。
 
-## Follow This Workflow
+## 执行流程
 
-1. Confirm the standard contract first.
-2. Search the whole frontend repo for old call sites before editing.
-3. Choose one of two outcomes only:
-   - Update every old call site to the standard contract.
-   - Keep only the standard contract and remove old paths immediately.
-4. Do not leave compatibility mappings, fallback fields, or mixed parameter names unless the user explicitly requires them.
-5. Verify the touched flow with the smallest useful build, test, or search pass.
+1. 先确认唯一标准契约，再开始改代码。
+2. 先全局搜索旧字段、旧方法、旧接口调用点，再做修改。
+3. 只允许两种结果：
+   - 所有调用点全部切到新契约。
+   - 只保留新契约，并立即删除旧路径。
+4. 除非用户明确要求，否则不要保留兼容映射、fallback 字段、双写参数、过渡适配层。
+5. 改完后用最小必要的搜索、构建或测试做一次验证。
 
-## Enforce API Contract Discipline
+## 契约约束
 
-- Use `rg` to locate request helpers, component calls, stores, hooks, and constants tied to the same interface.
-- Rename fields at every call site instead of translating old fields inside the API layer.
-- Keep request bodies, query params, and function signatures aligned to the backend contract exactly.
-- Remove dead branches and obsolete fields once the standard contract is in place.
+- 用 `rg` 搜 request 方法、组件调用、store、hook、常量和同接口相关的所有入口。
+- 字段改名要在调用点同步修改，不要在 API 层做“旧字段转新字段”的中间翻译。
+- 请求体、query 参数、函数签名、响应字段要和后端标准契约完全一致。
+- 新契约落地后，立即删除废弃分支、旧字段、旧 helper。
 
-## Keep Style Consistent
+## 风格约束
 
-- Match surrounding code style for parameter passing, request helpers, naming, imports, and tool usage.
-- Prefer concise code over abstraction layers added only for compatibility.
-- Keep related constants, state, helpers, and handlers adjacent instead of scattering them.
-- Use line comments to split logical sections when the file benefits from structure.
-- Add a short comment to every variable declaration and every method definition in the changed code, unless the file's established style makes that impossible.
-- Keep comments factual and brief; explain purpose, not syntax.
+- 保持项目现有的参数传递、命名、导入、请求封装和文件组织风格。
+- 优先写短而直接的代码，不要为了兼容历史契约再加一层抽象。
+- 相关常量、状态、辅助逻辑、提交方法尽量放在相邻位置，不要四处散落。
+- 文件需要分段时，用简短行注释划分逻辑块。
+- 在你改动的代码里，给变量声明和方法定义补简短注释；如果项目现有风格明显不这么写，则优先跟随项目。
+- 注释只解释用途，不解释语法。
 
-## Use This Search Pattern
+## 搜索方式
 
 ```powershell
 rg "oldFieldName|oldMethodName|targetEndpoint|requestFunction" src
 ```
 
-Search before editing and again after editing to confirm old names are gone.
+修改前先搜，修改后再搜一遍，确认旧名字已经清理干净。
 
-## Apply This Edit Pattern
+## 推荐改法
 
 ```js
 // ==================== api ====================
@@ -72,8 +72,8 @@ async function handleSubmit() {
 }
 ```
 
-## Final Checks
+## 最终检查
 
-- Re-run `rg` to confirm old fields or old helpers are removed.
-- Build or test the affected frontend target when feasible.
-- Report whether any unverified paths remain.
+- 重新执行 `rg`，确认旧字段、旧 helper、旧参数名都已移除。
+- 条件允许时，对受影响页面或模块做一次最小构建或测试。
+- 明确说明是否还有未验证路径。

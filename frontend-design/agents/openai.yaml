@@ -1,0 +1,4 @@
+interface:
+  display_name: "前端设计"
+  short_description: "产出有辨识度的高质量前端界面"
+  default_prompt: "Use $frontend-design 设计并实现一个有明确视觉方向、可直接运行的前端界面。"

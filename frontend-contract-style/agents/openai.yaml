@@ -1,4 +1,4 @@
 interface:
-  display_name: "Frontend Contract Style"
-  short_description: "Enforce strict frontend API and style rules"
-  default_prompt: "Use $frontend-contract-style to implement a frontend change with standard-only API contracts and consistent code style."
+  display_name: "前端契约收敛"
+  short_description: "统一前端接口契约与实现风格"
+  default_prompt: "Use $frontend-contract-style 按单一标准契约完成前端接口改造，并同步收敛相关实现风格。"
